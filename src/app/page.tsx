@@ -7,6 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { RevenueLineChart } from "@/components/charts/revenue-line-chart";
+import { OccupancyBarChart } from "@/components/charts/occupancy-bar-chart";
 import { BarChart3, Users, TrendingUp, Activity } from "lucide-react";
 
 const stats = [
@@ -78,6 +80,29 @@ export default function HomePage() {
               </CardContent>
             </Card>
           ))}
+        </div>
+
+        {/* Charts: stack on phone/tablet, side-by-side on xl */}
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <Card>
+            <CardHeader>
+              <CardTitle>Revenue</CardTitle>
+              <CardDescription>Monthly revenue over the last 12 months</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RevenueLineChart />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Occupancy</CardTitle>
+              <CardDescription>Monthly occupancy rate over the last 12 months</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <OccupancyBarChart />
+            </CardContent>
+          </Card>
         </div>
 
         <Card>
