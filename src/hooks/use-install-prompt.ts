@@ -26,7 +26,11 @@ export function useInstallPrompt() {
     if (localStorage.getItem(DISMISSED_KEY)) return;
 
     const ua = navigator.userAgent;
-    const isIOS = /iphone|ipad|ipod/i.test(ua);
+    // iPadOS 13+ reports a Mac UA — detect it via touch points instead
+    const isIOS =
+      /iphone|ipod/i.test(ua) ||
+      /ipad/i.test(ua) ||
+      (/macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
     // Safari but not Chrome/Firefox/Edge on iOS (they can't install anyway)
     const isSafari = /^((?!chrome|crios|fxios|edgios).)*safari/i.test(ua);
 
