@@ -6,4 +6,5 @@ export const { GET, dynamic, dynamicParams, revalidate } = createSerwistRoute({
   swSrc: "src/app/sw.ts",
   globDirectory: ".next",
   nextConfig,
+  useNativeEsbuild: true,
 });

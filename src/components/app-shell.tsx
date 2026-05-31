@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { InstallBanner } from "@/components/install-banner";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -130,6 +131,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="mx-auto w-full max-w-5xl">{children}</div>
         </main>
       </div>
+
+      <InstallBanner />
     </div>
   );
 }
