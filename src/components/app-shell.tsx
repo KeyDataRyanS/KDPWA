@@ -94,7 +94,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* Main column */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Sticky header */}
-        <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background/80 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <header
+          className="sticky top-0 z-30 flex shrink-0 items-center gap-2 border-b border-border bg-background/80 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+          style={{
+            paddingTop: "env(safe-area-inset-top)",
+            minHeight: "calc(3.5rem + env(safe-area-inset-top))",
+          }}
+        >
           {/* Mobile drawer trigger — hidden on md+ */}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger
