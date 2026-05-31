@@ -1,8 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 
-const THRESHOLD = 72; // px of pull needed to trigger a refresh
+const THRESHOLD = 72;
 
 function isPWA() {
   return (
@@ -12,36 +12,49 @@ function isPWA() {
   );
 }
 
-export function usePullToRefresh(onRefresh: () => Promise<void> | void) {
+export function usePullToRefresh(
+  onRefresh: () => Promise<void> | void,
+  scrollRef: RefObject<HTMLElement | null>
+) {
   const [pullDistance, setPullDistance] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const startY = useRef<number | null>(null);
-  // Snapshot PWA status once on mount — avoids re-checking on every event
   const active = useRef(false);
 
   useEffect(() => {
     active.current = isPWA();
   }, []);
 
+  const atTop = useCallback(
+    () => (scrollRef.current?.scrollTop ?? 0) === 0,
+    [scrollRef]
+  );
+
   const onTouchStart = useCallback(
     (e: TouchEvent) => {
       if (!active.current || isRefreshing) return;
-      if (window.scrollY === 0) startY.current = e.touches[0].clientY;
+      // Only arm the gesture when the scroll container is truly at the top
+      if (atTop()) startY.current = e.touches[0].clientY;
     },
-    [isRefreshing]
+    [isRefreshing, atTop]
   );
 
   const onTouchMove = useCallback(
     (e: TouchEvent) => {
       if (!active.current || isRefreshing || startY.current === null) return;
+      // Disarm if the user has scrolled down since the gesture started
+      if (!atTop()) {
+        startY.current = null;
+        setPullDistance(0);
+        return;
+      }
       const delta = e.touches[0].clientY - startY.current;
-      if (delta > 0 && window.scrollY === 0) {
-        // Block native browser pull-to-refresh / overscroll
+      if (delta > 0) {
         e.preventDefault();
         setPullDistance(Math.min(delta, THRESHOLD * 1.5));
       }
     },
-    [isRefreshing]
+    [isRefreshing, atTop]
   );
 
   const onTouchEnd = useCallback(async () => {
@@ -60,16 +73,17 @@ export function usePullToRefresh(onRefresh: () => Promise<void> | void) {
   }, [pullDistance, onRefresh]);
 
   useEffect(() => {
-    document.addEventListener("touchstart", onTouchStart, { passive: true });
-    // passive: false so we can call preventDefault and block overscroll
-    document.addEventListener("touchmove", onTouchMove, { passive: false });
-    document.addEventListener("touchend", onTouchEnd);
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
     return () => {
-      document.removeEventListener("touchstart", onTouchStart);
-      document.removeEventListener("touchmove", onTouchMove);
-      document.removeEventListener("touchend", onTouchEnd);
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
+      el.removeEventListener("touchend", onTouchEnd);
     };
-  }, [onTouchStart, onTouchMove, onTouchEnd]);
+  }, [scrollRef, onTouchStart, onTouchMove, onTouchEnd]);
 
   return { pullDistance, isRefreshing, threshold: THRESHOLD };
 }

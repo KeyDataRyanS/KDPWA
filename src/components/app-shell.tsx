@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { LayoutDashboard, Settings, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -84,6 +84,7 @@ function DrawerNav({ onClose }: { onClose: () => void }) {
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
 
   return (
     <div className="flex h-full w-full overflow-hidden">
@@ -132,6 +133,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
         {/* Scrollable content */}
         <main
+          ref={mainRef}
           className="flex-1 overflow-y-auto p-4 md:p-6"
           style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
         >
@@ -140,7 +142,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </div>
 
       <InstallBanner />
-      <PullToRefresh />
+      <PullToRefresh scrollRef={mainRef} />
     </div>
   );
 }

@@ -1,28 +1,29 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, type RefObject } from "react";
 import { RefreshCw } from "lucide-react";
 import { usePullToRefresh } from "@/hooks/use-pull-to-refresh";
 import { cn } from "@/lib/utils";
 
 const THRESHOLD = 72;
 
-export function PullToRefresh() {
+interface PullToRefreshProps {
+  scrollRef: RefObject<HTMLElement | null>;
+}
+
+export function PullToRefresh({ scrollRef }: PullToRefreshProps) {
   const router = useRouter();
 
   const onRefresh = useCallback(async () => {
     router.refresh();
-    // Brief pause so the spinner is visible even on fast refreshes
     await new Promise((r) => setTimeout(r, 600));
   }, [router]);
 
-  const { pullDistance, isRefreshing, threshold } = usePullToRefresh(onRefresh);
+  const { pullDistance, isRefreshing, threshold } = usePullToRefresh(onRefresh, scrollRef);
 
   const visible = pullDistance > 0 || isRefreshing;
-  // How far through the pull gesture (0 → 1)
   const progress = Math.min(pullDistance / threshold, 1);
-  // Translate the indicator down as the user pulls
   const translateY = isRefreshing ? 0 : pullDistance * 0.4;
 
   if (!visible) return null;
@@ -43,7 +44,7 @@ export function PullToRefresh() {
       >
         <RefreshCw
           className={cn(
-            "size-4 text-muted-foreground transition-transform duration-150",
+            "size-4 text-muted-foreground",
             isRefreshing && "animate-spin"
           )}
           style={
