@@ -15,6 +15,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { InstallBanner } from "@/components/install-banner";
+import { PullToRefresh } from "@/components/pull-to-refresh";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -139,6 +140,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </div>
 
       <InstallBanner />
+      <PullToRefresh />
     </div>
   );
 }
