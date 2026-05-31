@@ -11,12 +11,11 @@ export function InstallBanner() {
   if (!visible) return null;
 
   return (
-    /* Slide up from the bottom; hidden on lg+ (desktop) */
     <div
       role="banner"
       aria-label="Install app"
       className={cn(
-        "fixed inset-x-0 bottom-0 z-50 lg:hidden",
+        "fixed inset-x-0 bottom-0 z-50",
         "animate-in slide-in-from-bottom-4 duration-300"
       )}
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}

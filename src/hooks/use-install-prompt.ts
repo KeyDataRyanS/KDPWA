@@ -25,6 +25,9 @@ export function useInstallPrompt() {
     // User already dismissed the banner
     if (localStorage.getItem(DISMISSED_KEY)) return;
 
+    // Non-touch desktop — skip entirely (no pointer = not a phone/tablet)
+    if (navigator.maxTouchPoints === 0) return;
+
     const ua = navigator.userAgent;
     // iPadOS 13+ reports a Mac UA — detect it via touch points instead
     const isIOS =
