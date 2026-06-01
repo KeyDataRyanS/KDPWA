@@ -85,14 +85,14 @@ export function PacingAreaChart({
           />
           <XAxis
             dataKey="month"
-            tick={{ fontSize: 10, fill: "var(--color-muted-foreground)" }}
+            tick={{ fontSize: 10, fill: "var(--color-muted-foreground)", fontFamily: "var(--font-sans)" }}
             axisLine={false}
             tickLine={false}
           />
           <YAxis
             tickFormatter={yFormatter}
             domain={yDomain ?? ["auto", "auto"]}
-            tick={{ fontSize: 10, fill: "var(--color-muted-foreground)" }}
+            tick={{ fontSize: 10, fill: "var(--color-muted-foreground)", fontFamily: "var(--font-sans)" }}
             axisLine={false}
             tickLine={false}
             width={54}

@@ -36,13 +36,13 @@ export function RevenueLineChart() {
         />
         <XAxis
           dataKey="month"
-          tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
+          tick={{ fontSize: 11, fill: "var(--color-muted-foreground)", fontFamily: "var(--font-sans)" }}
           axisLine={false}
           tickLine={false}
         />
         <YAxis
           tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
-          tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
+          tick={{ fontSize: 11, fill: "var(--color-muted-foreground)", fontFamily: "var(--font-sans)" }}
           axisLine={false}
           tickLine={false}
           width={40}

@@ -36,14 +36,14 @@ export function OccupancyBarChart() {
         />
         <XAxis
           dataKey="month"
-          tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
+          tick={{ fontSize: 11, fill: "var(--color-muted-foreground)", fontFamily: "var(--font-sans)" }}
           axisLine={false}
           tickLine={false}
         />
         <YAxis
           tickFormatter={(v) => `${v}%`}
           domain={[0, 100]}
-          tick={{ fontSize: 11, fill: "var(--color-muted-foreground)" }}
+          tick={{ fontSize: 11, fill: "var(--color-muted-foreground)", fontFamily: "var(--font-sans)" }}
           axisLine={false}
           tickLine={false}
           width={36}
