@@ -19,6 +19,8 @@ export function usePullToRefresh(
   const [pullDistance, setPullDistance] = useState(0);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const startY = useRef<number | null>(null);
+  const startX = useRef<number | null>(null);
+  const isHorizontal = useRef(false);
   const active = useRef(false);
 
   useEffect(() => {
@@ -33,8 +35,11 @@ export function usePullToRefresh(
   const onTouchStart = useCallback(
     (e: TouchEvent) => {
       if (!active.current || isRefreshing) return;
-      // Only arm the gesture when the scroll container is truly at the top
-      if (atTop()) startY.current = e.touches[0].clientY;
+      if (atTop()) {
+        startY.current = e.touches[0].clientY;
+        startX.current = e.touches[0].clientX;
+        isHorizontal.current = false;
+      }
     },
     [isRefreshing, atTop]
   );
@@ -48,10 +53,25 @@ export function usePullToRefresh(
         setPullDistance(0);
         return;
       }
-      const delta = e.touches[0].clientY - startY.current;
-      if (delta > 0) {
+      // Once classified as horizontal, ignore the rest of this gesture
+      if (isHorizontal.current) return;
+
+      const dx = Math.abs(e.touches[0].clientX - (startX.current ?? 0));
+      const dy = e.touches[0].clientY - startY.current;
+
+      // Wait for at least 5 px of movement before classifying direction
+      if (dx < 5 && Math.abs(dy) < 5) return;
+
+      // Horizontal swipe — disarm pull-to-refresh for this gesture
+      if (dx > Math.abs(dy)) {
+        isHorizontal.current = true;
+        setPullDistance(0);
+        return;
+      }
+
+      if (dy > 0) {
         e.preventDefault();
-        setPullDistance(Math.min(delta, THRESHOLD * 1.5));
+        setPullDistance(Math.min(dy, THRESHOLD * 1.5));
       }
     },
     [isRefreshing, atTop]
@@ -61,6 +81,8 @@ export function usePullToRefresh(
     if (!active.current || startY.current === null) return;
     const pulled = pullDistance;
     startY.current = null;
+    startX.current = null;
+    isHorizontal.current = false;
     setPullDistance(0);
     if (pulled >= THRESHOLD) {
       setIsRefreshing(true);
