@@ -15,27 +15,37 @@ const tabs = [
 export function CompanyOverviewTabs() {
   return (
     <Tabs.Root defaultValue="me-vs-last-year">
-      {/* Tab list — horizontally scrollable on narrow screens */}
-      <Tabs.List
-        className="flex border-b border-border"
-        style={{ overflowX: "auto", scrollbarWidth: "none" }}
-      >
-        {tabs.map((tab) => (
-          <Tabs.Tab
-            key={tab.value}
-            value={tab.value}
-            className={cn(
-              "-mb-px shrink-0 whitespace-nowrap border-b-2 border-transparent px-4 py-2.5",
-              "text-sm font-medium text-muted-foreground transition-colors",
-              "hover:text-foreground",
-              "data-[selected]:border-primary data-[selected]:text-foreground",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
-            )}
-          >
-            {tab.label}
-          </Tabs.Tab>
-        ))}
-      </Tabs.List>
+      {/*
+        Outer div holds the static border — it never scrolls.
+        Tabs.List scrolls horizontally inside it, and each tab's ::after
+        provides the active underline indicator on top of the border.
+      */}
+      <div className="relative">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-border" />
+        <Tabs.List
+          className="relative flex touch-pan-x overscroll-x-contain"
+          style={{ overflowX: "auto", scrollbarWidth: "none" }}
+        >
+          {tabs.map((tab) => (
+            <Tabs.Tab
+              key={tab.value}
+              value={tab.value}
+              className={cn(
+                "relative shrink-0 whitespace-nowrap px-4 py-2.5",
+                "text-sm font-medium text-muted-foreground transition-colors",
+                "hover:text-foreground",
+                // Active underline via ::after pseudo-element
+                "after:absolute after:inset-x-0 after:bottom-0 after:h-0.5",
+                "after:content-[''] after:transition-colors",
+                "data-[active]:text-foreground data-[active]:after:bg-primary",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+              )}
+            >
+              {tab.label}
+            </Tabs.Tab>
+          ))}
+        </Tabs.List>
+      </div>
 
       <Tabs.Panel value="me-vs-last-year" className="pt-5">
         <MeVsLastYear />
