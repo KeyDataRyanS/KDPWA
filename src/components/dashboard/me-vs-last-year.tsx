@@ -1,6 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import {
   PacingAreaChart,
   CURR_COLOR,
@@ -78,42 +85,58 @@ const unitRevData = [
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
 function FilterBar() {
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const filters = ["Arrival", "Events +", "Filters", "Clear Filters", "Menu"];
+
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 sm:flex-row sm:items-start sm:justify-between">
-      <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-xs sm:grid-cols-3">
-        <div className="space-y-0.5">
-          <p className="text-muted-foreground">Arrival Primary Range</p>
-          <p className="font-medium">1/1/2026 – 12/31/2026</p>
-          <p className="text-muted-foreground">as of 5/31/2026</p>
+    <>
+      <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-xs sm:grid-cols-3">
+          <div className="space-y-0.5">
+            <p className="text-muted-foreground">Arrival Primary Range</p>
+            <p className="font-medium">1/1/2026 – 12/31/2026</p>
+            <p className="text-muted-foreground">as of 5/31/2026</p>
+          </div>
+          <div className="space-y-0.5">
+            <p className="text-muted-foreground">Arrival Compare Range</p>
+            <p className="font-medium">1/1/2025 – 12/31/2025</p>
+            <p className="text-muted-foreground">as of 6/1/2025</p>
+          </div>
+          <div className="space-y-0.5">
+            <p className="text-muted-foreground">Markets</p>
+            <p className="font-medium">Florida Panhandle</p>
+          </div>
         </div>
-        <div className="space-y-0.5">
-          <p className="text-muted-foreground">Arrival Compare Range</p>
-          <p className="font-medium">1/1/2025 – 12/31/2025</p>
-          <p className="text-muted-foreground">as of 6/1/2025</p>
-        </div>
-        <div className="space-y-0.5">
-          <p className="text-muted-foreground">Markets</p>
-          <p className="font-medium">Florida Panhandle</p>
+        <div className="flex flex-wrap gap-1.5 sm:shrink-0">
+          {filters.map((label, i) => (
+            <button
+              key={label}
+              type="button"
+              onClick={label === "Filters" ? () => setFiltersOpen(true) : undefined}
+              className={cn(
+                "rounded-md px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                i === 0
+                  ? "bg-foreground text-background"
+                  : "border border-border bg-background text-foreground hover:bg-muted"
+              )}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
-      <div className="flex flex-wrap gap-1.5 sm:shrink-0">
-        {filters.map((label, i) => (
-          <button
-            key={label}
-            type="button"
-            className={cn(
-              "rounded-md px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-              i === 0
-                ? "bg-foreground text-background"
-                : "border border-border bg-background text-foreground hover:bg-muted"
-            )}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-    </div>
+
+      <Sheet open={filtersOpen} onOpenChange={setFiltersOpen}>
+        <SheetContent side="right" className="w-80 sm:max-w-80">
+          <SheetHeader>
+            <SheetTitle>Filters</SheetTitle>
+          </SheetHeader>
+          <div className="px-4 pb-4">
+            <p className="text-sm text-muted-foreground">Filter options coming soon.</p>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 }
 
