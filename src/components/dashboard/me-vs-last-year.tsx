@@ -85,6 +85,7 @@ const unitRevData = [
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
 function FilterBar() {
+  const [eventsOpen, setEventsOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const filters = ["Arrival", "Events +", "Filters", "Clear Filters", "Menu"];
 
@@ -112,7 +113,11 @@ function FilterBar() {
             <button
               key={label}
               type="button"
-              onClick={label === "Filters" ? () => setFiltersOpen(true) : undefined}
+              onClick={
+                label === "Filters" ? () => setFiltersOpen(true)
+                : label === "Events +" ? () => setEventsOpen(true)
+                : undefined
+              }
               className={cn(
                 "rounded-md px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 i === 0
@@ -125,6 +130,17 @@ function FilterBar() {
           ))}
         </div>
       </div>
+
+      <Sheet open={eventsOpen} onOpenChange={setEventsOpen}>
+        <SheetContent side="right" className="w-80 sm:max-w-80">
+          <SheetHeader>
+            <SheetTitle>Events +</SheetTitle>
+          </SheetHeader>
+          <div className="px-4 pb-4">
+            <p className="text-sm text-muted-foreground">Event options coming soon.</p>
+          </div>
+        </SheetContent>
+      </Sheet>
 
       <Sheet open={filtersOpen} onOpenChange={setFiltersOpen}>
         <SheetContent side="right" className="w-80 sm:max-w-80">
