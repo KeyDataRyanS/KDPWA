@@ -108,7 +108,6 @@ export function PacingAreaChart({
                     entry.value != null ? (
                       <p
                         key={entry.dataKey as string}
-                        className="tabular-nums"
                         style={{ color: entry.color }}
                       >
                         {fmt(entry.value as number)}

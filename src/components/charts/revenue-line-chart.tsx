@@ -57,7 +57,7 @@ export function RevenueLineChart() {
             return (
               <div className="rounded-lg border border-border bg-card px-3 py-2 text-xs shadow-md">
                 <p className="font-medium text-card-foreground">{label}</p>
-                <p className="tabular-nums text-muted-foreground">{formatted}</p>
+                <p className="text-muted-foreground">{formatted}</p>
               </div>
             );
           }}

@@ -122,7 +122,7 @@ function DeltaBadge({ value, positive }: DeltaBadgeProps) {
   return (
     <span
       className={cn(
-        "shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums",
+        "shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold",
         positive
           ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
           : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
@@ -161,11 +161,11 @@ function MetricCard({
       </CardHeader>
       <CardContent className="space-y-2 pt-0">
         <div className="flex items-baseline justify-between gap-2">
-          <span className="text-2xl font-semibold tabular-nums leading-none">{currValue}</span>
+          <span className="text-2xl font-semibold leading-none">{currValue}</span>
           <span className="text-xs text-muted-foreground">{currYear}</span>
         </div>
         <div className="flex items-baseline justify-between gap-2">
-          <span className="text-lg font-medium tabular-nums leading-none text-muted-foreground">
+          <span className="text-lg font-medium leading-none text-muted-foreground">
             {compValue}
           </span>
           <span className="text-xs text-muted-foreground">{compYear}</span>

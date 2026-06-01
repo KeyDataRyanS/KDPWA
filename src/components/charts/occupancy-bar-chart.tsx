@@ -55,7 +55,7 @@ export function OccupancyBarChart() {
             return (
               <div className="rounded-lg border border-border bg-card px-3 py-2 text-xs shadow-md">
                 <p className="font-medium text-card-foreground">{label}</p>
-                <p className="tabular-nums text-muted-foreground">
+                <p className="text-muted-foreground">
                   {payload[0].value}% occupied
                 </p>
               </div>
